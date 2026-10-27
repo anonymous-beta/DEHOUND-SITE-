@@ -1,222 +1,677 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b0b0d">
-<meta name="description" content="DEHOUND — a dog-themed public intelligence toolkit for research, triage, and security awareness.">
-<title>DEHOUND — Follow the signal.</title>
+<meta name="description" content="DEHOUND is an Android public intelligence and security research toolkit created by Anonymous-beta.">
+<title>DEHOUND — Follow the Signal</title>
+
 <style>
-:root{--bg:#0b0b0d;--panel:#141416;--line:#302d33;--text:#f4f2f2;--muted:#aaa5aa;--red:#e21b2d;--max:1160px}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.7 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
-a{color:inherit;text-decoration:none}
-button{font:inherit;cursor:pointer}
-.wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
-.topline{height:3px;background:linear-gradient(90deg,#f22b3e,#64101a,transparent)}
-header{position:sticky;top:0;z-index:5;background:#0b0b0dec;backdrop-filter:blur(15px);border-bottom:1px solid #ffffff12}
-.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:.13em}
-.mark{display:grid;place-items:center;width:37px;height:37px;border:1px solid #6b1b25;border-radius:9px;background:#200d11;color:#ff4354;font-size:21px}
-.brand small{display:block;font-size:9px;letter-spacing:.2em;color:#a9a2a8}
-.links{display:flex;align-items:center;gap:25px;font-size:13px;color:#d1cdd0}
-.links a:hover{color:#fff}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid var(--red);background:var(--red);color:white;border-radius:7px;padding:12px 17px;font-size:13px;font-weight:800;transition:.18s}
-.btn:hover{background:#bd1424;transform:translateY(-1px)}
-.btn.ghost{background:#ffffff06;border-color:#48434a}
-.btn.ghost:hover{background:#ffffff12}
-.menu{display:none;background:transparent;border:1px solid var(--line);color:#fff;border-radius:7px;padding:8px 11px;font-size:18px}
-.hero{position:relative;min-height:640px;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--line);background:#080809}
-.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#080809f5 0%,#080809df 36%,#08080945 75%,#08080955 100%),url("assets/hound-hero.png") center right/cover no-repeat}
-.hero:after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--red),transparent)}
-.hero-content{position:relative;z-index:1;max-width:680px;padding:90px 0}
-.eyebrow,.kicker{color:#ff5263;text-transform:uppercase;letter-spacing:.2em;font-size:10px;font-weight:900}
-.eyebrow:before{content:"";display:inline-block;width:24px;height:2px;background:var(--red);vertical-align:middle;margin-right:10px}
-h1{font-size:clamp(44px,7vw,82px);letter-spacing:-.065em;line-height:.98;margin:22px 0}
-h1 span{color:#ff3447}
-.hero p{max-width:540px;color:#c7c0c5;font-size:17px}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.micro{font-size:11px;color:#8d878d;margin-top:18px}
-.status{display:flex;flex-wrap:wrap;gap:19px;margin-top:36px;color:#c5bdc3;font-size:10px;text-transform:uppercase;letter-spacing:.1em}
-.status span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin:0 8px 1px 0}
-section{padding:88px 0}
-.head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:32px}
-h2{font-size:clamp(30px,4vw,47px);letter-spacing:-.05em;line-height:1.08;margin:10px 0 0}
-.head p{max-width:430px;margin:0;color:var(--muted);font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.card{padding:25px;border:1px solid var(--line);border-radius:10px;background:linear-gradient(145deg,#19181c,#111113)}
-.symbol{display:grid;place-items:center;width:42px;height:42px;margin-bottom:22px;background:#2b0e13;border:1px solid #581721;border-radius:9px;color:#ff5263;font-size:20px}
-.card h3{margin:0 0 8px;font-size:17px}
-.card p{margin:0;color:var(--muted);font-size:13px}
-.band{background:#101012;border-block:1px solid var(--line)}
-.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:30px}
-.tool{padding:17px;border:1px solid #302d33;border-radius:8px;background:#171619}
-.tool b{display:block;font-size:13px}
-.tool span{color:var(--muted);font-size:11px}
-.disclaimer{font-size:12px;color:#908991;max-width:830px;margin-top:22px}
-.download-layout{display:grid;grid-template-columns:1fr .9fr;gap:44px;align-items:center}
-.copy{color:var(--muted);max-width:510px;margin-top:18px}
-.steps{display:grid;gap:18px;margin-top:25px}
-.step{display:grid;grid-template-columns:32px 1fr;gap:13px}
-.num{width:30px;height:30px;display:grid;place-items:center;border:1px solid #68212b;border-radius:50%;color:#ff5b6b;font-size:11px;font-weight:900}
-.step h3{font-size:14px;margin:0 0 3px}
-.step p{font-size:12px;color:var(--muted);margin:0}
-.download-box{padding:28px;border:1px solid #54202a;border-radius:12px;background:radial-gradient(circle at 100% 0,#391119,transparent 48%),#151316}
-.label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#ff6574;font-weight:900}
-.download-box h3{font-size:24px;margin:12px 0 4px}
-.download-box p{font-size:13px;color:#bcb4bb}
-.download-actions{display:grid;gap:10px;margin-top:20px}
-.download-actions .btn{width:100%}
-.fine{font-size:11px!important;color:#8e8790!important;line-height:1.7}
-.notice{display:none;margin-top:12px;padding:12px;border:1px solid #6b222c;background:#290e13;color:#ffdce0;border-radius:7px;font-size:12px}
-.notice.show{display:block}
-.creator{background:#121214;border-top:1px solid var(--line)}
-.creator-card{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:30px;border:1px solid #38343b;border-radius:12px;background:linear-gradient(120deg,#1b171b,#111113);margin-top:18px}
-.person{display:flex;align-items:center;gap:15px}
-.avatar{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;background:#290e13;border:1px solid #70202b;color:#ff5263;font-weight:900}
-.person h3{margin:0;font-size:18px}
-.person p{margin:4px 0 0;color:var(--muted);font-size:12px}
-footer{padding:26px 0;color:#817b83;font-size:11px}
-.foot{display:flex;justify-content:space-between;gap:20px}
-.foot strong{color:#ddd;letter-spacing:.13em}
-@media(max-width:800px){
-.links{display:none;position:absolute;top:76px;left:0;right:0;padding:20px;background:#111114;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch}
-.links.open{display:flex}
-.links .btn{text-align:center}
-.nav>.btn{display:none}
-.menu{display:block}
-.hero{min-height:620px}
-.hero:before{background-image:linear-gradient(90deg,#080809f2,#080809c9 58%,#08080975),url("assets/hound-hero.png");background-position:60% center}
-.head{display:block}
-.head p{margin-top:17px}
-.grid{grid-template-columns:1fr}
-.tools{grid-template-columns:repeat(2,1fr)}
-.download-layout{grid-template-columns:1fr;gap:28px}
-.creator-card{align-items:flex-start;flex-direction:column}
+:root {
+  --bg: #0b0b0d;
+  --panel: #151417;
+  --border: #302d33;
+  --text: #f4f2f2;
+  --muted: #aaa5aa;
+  --red: #e21b2d;
+  --red-dark: #8d1422;
 }
-@media(max-width:460px){
-.wrap{width:calc(100% - 28px)}
-section{padding:66px 0}
-.hero-content{padding:68px 0}
-.hero p{font-size:15px}
-.actions{display:grid}
-.actions .btn{width:100%}
-.status{gap:10px}
-.foot{flex-direction:column}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.7 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+
+.wrap {
+  width: min(1120px, calc(100% - 36px));
+  margin: auto;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #0b0b0df2;
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  font-weight: 900;
+  letter-spacing: .14em;
+  font-size: 19px;
+}
+
+.brand small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: .18em;
+}
+
+.navlinks {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: 13px;
+}
+
+.navlinks a:hover { color: #ff5968; }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 17px;
+  border: 1px solid var(--red);
+  border-radius: 7px;
+  background: var(--red);
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
+  transition: .2s;
+}
+
+.button:hover {
+  background: #bd1525;
+  transform: translateY(-1px);
+}
+
+.button.secondary {
+  background: #ffffff08;
+  border-color: #48434a;
+}
+
+.button.secondary:hover { background: #ffffff15; }
+
+.menu {
+  display: none;
+  background: transparent;
+  color: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+}
+
+.hero {
+  position: relative;
+  min-height: 590px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: #080809;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #080809f5 0%, #080809df 43%, #08080955 100%),
+    url("assets/hound-hero.png") center right / cover no-repeat;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 650px;
+  padding: 80px 0;
+}
+
+.eyebrow, .kicker {
+  color: #ff5263;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+}
+
+h1 {
+  margin: 20px 0;
+  font-size: clamp(43px, 7vw, 78px);
+  line-height: 1;
+  letter-spacing: -.06em;
+}
+
+h1 span { color: #ff3447; }
+
+.hero p {
+  max-width: 530px;
+  color: #c7c0c5;
+  font-size: 16px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.small-note {
+  margin-top: 17px;
+  color: #918a92;
+  font-size: 11px;
+}
+
+section { padding: 78px 0; }
+
+.section-heading {
+  margin-bottom: 28px;
+}
+
+h2 {
+  margin: 8px 0;
+  font-size: clamp(30px, 5vw, 46px);
+  line-height: 1.1;
+  letter-spacing: -.045em;
+}
+
+.intro {
+  max-width: 650px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: linear-gradient(145deg, #19181c, #111113);
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.capabilities {
+  background: #101012;
+  border-block: 1px solid var(--border);
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.tool {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #171619;
+}
+
+.tool strong {
+  display: block;
+  font-size: 13px;
+}
+
+.tool span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.download-layout {
+  display: grid;
+  grid-template-columns: 1fr .9fr;
+  gap: 35px;
+  align-items: start;
+}
+
+.download-card {
+  padding: 27px;
+  border: 1px solid #58212a;
+  border-radius: 11px;
+  background:
+    radial-gradient(circle at top right, #391119, transparent 50%),
+    #151316;
+}
+
+.download-card h3 {
+  margin: 10px 0 4px;
+  font-size: 24px;
+}
+
+.download-card p {
+  color: #bcb4bb;
+  font-size: 13px;
+}
+
+.download-actions {
+  display: grid;
+  gap: 11px;
+  margin-top: 20px;
+}
+
+.download-actions .button { width: 100%; }
+
+.status {
+  padding: 13px;
+  margin-top: 13px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  color: #d4cdd3;
+  font-size: 12px;
+}
+
+.status.success {
+  border-color: #315a3b;
+  background: #102016;
+  color: #c5f3cf;
+}
+
+.status.warning {
+  border-color: #68212b;
+  background: #290e13;
+  color: #ffdce0;
+}
+
+[hidden] { display: none !important; }
+
+.fine {
+  color: #918a92 !important;
+  font-size: 11px !important;
+  overflow-wrap: anywhere;
+}
+
+.creator {
+  background: #121214;
+  border-top: 1px solid var(--border);
+}
+
+.creator-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #181619;
+}
+
+.creator-card h3 { margin: 0; }
+
+.creator-card p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+footer {
+  padding: 25px 0;
+  color: #817b83;
+  font-size: 11px;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+@media (max-width: 760px) {
+  .navlinks {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: #111114;
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .navlinks.open { display: flex; }
+  .menu { display: block; }
+  .nav > .button { display: none; }
+  .hero { min-height: 570px; }
+
+  .hero::before {
+    background:
+      linear-gradient(90deg, #080809f2, #080809c9 65%, #08080988),
+      url("assets/hound-hero.png") center / cover no-repeat;
+  }
+
+  .cards, .download-layout { grid-template-columns: 1fr; }
+  .tools { grid-template-columns: repeat(2, 1fr); }
+  .creator-card { align-items: flex-start; flex-direction: column; }
+}
+
+@media (max-width: 430px) {
+  .wrap { width: calc(100% - 28px); }
+  section { padding: 58px 0; }
+  .actions { flex-direction: column; }
+  .actions .button { width: 100%; }
+  .footer-inner { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
 </style>
 </head>
+
 <body>
-<div class="topline"></div>
+
 <header>
-<div class="wrap nav">
-<a class="brand" href="#top"><span class="mark" aria-hidden="true">⌁</span><span>DEHOUND<small>PUBLIC INTELLIGENCE TOOLKIT</small></span></a>
-<nav class="links" id="links">
-<a href="#about">Overview</a><a href="#tools">Capabilities</a><a href="#download">Download</a><a href="#creator">Creator</a><a class="btn" href="#download">Get the APK ↗</a>
-</nav>
-<a class="btn" href="#download">Get the APK ↗</a>
-<button class="menu" id="menu" aria-label="Open navigation" aria-expanded="false">☰</button>
-</div>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#home">
+        DEHOUND
+        <small>PUBLIC INTELLIGENCE TOOLKIT</small>
+      </a>
+
+      <div class="navlinks" id="navlinks">
+        <a href="#about">Overview</a>
+        <a href="#tools">Capabilities</a>
+        <a href="#download">Download</a>
+        <a href="#creator">Creator</a>
+      </div>
+
+      <a class="button" href="#download">Get the APK ↗</a>
+      <button class="menu" id="menu" aria-label="Toggle navigation"
+        aria-expanded="false">☰</button>
+    </nav>
+  </div>
 </header>
 
-<main id="top">
-<section class="hero"><div class="wrap"><div class="hero-content">
-<div class="eyebrow">Stay sharp. Follow the signal.</div>
-<h1>Good instincts.<br><span>Better intelligence.</span></h1>
-<p>DEHOUND is a dog-themed Android toolkit built to bring public-source research, quick checks, and security awareness into one focused workspace.</p>
-<div class="actions"><a class="btn" href="#download">Get DEHOUND ↓</a><a class="btn ghost" href="#about">Explore the toolkit</a></div>
-<div class="micro">Built for responsible research. Use only information and systems you’re authorized to investigate.</div>
-<div class="status"><span>Android app</span><span>Research-focused</span><span>By Anonymous-beta</span></div>
-</div></div></section>
+<main id="home">
 
-<section id="about"><div class="wrap">
-<div class="head"><div><div class="kicker">Built to track the signal</div><h2>Less noise.<br>More useful context.</h2></div><p>DEHOUND brings common public-information checks together in a single mobile interface, with a clear emphasis on responsible use and readable results.</p></div>
-<div class="grid">
-<article class="card"><div class="symbol">⌕</div><h3>Focused research</h3><p>Organize everyday public-source checks without jumping between a pile of browser tabs.</p></article>
-<article class="card"><div class="symbol">⬡</div><h3>Security awareness</h3><p>Support triage and learning with clear context. Findings are leads to verify, not automatic verdicts.</p></article>
-<article class="card"><div class="symbol">≡</div><h3>Readable results</h3><p>A straightforward interface designed to keep inputs, results, and next steps easy to follow on mobile.</p></article>
-</div></div></section>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-content">
+      <div class="eyebrow">Stay sharp. Follow the signal.</div>
 
-<section class="band" id="tools"><div class="wrap">
-<div class="head"><div><div class="kicker">Inside the toolkit</div><h2>Tools with a clear purpose.</h2></div><p>Available modules depend on the installed app build and provider availability. Verify important findings with reliable sources.</p></div>
-<div class="tools">
-<div class="tool"><b>Email checks</b><span>Basic address research and triage</span></div>
-<div class="tool"><b>Phone research</b><span>Public context and formatting checks</span></div>
-<div class="tool"><b>IP intelligence</b><span>Public network context</span></div>
-<div class="tool"><b>Domain &amp; DNS</b><span>Public domain records</span></div>
-<div class="tool"><b>Web page review</b><span>Surface-level page checks</span></div>
-<div class="tool"><b>Username search</b><span>Public profile discovery leads</span></div>
-<div class="tool"><b>Phishing awareness</b><span>Heuristic indicators to review</span></div>
-<div class="tool"><b>Threat research</b><span>Research support and context</span></div>
-</div>
-<p class="disclaimer">DEHOUND cannot guarantee identity, ownership, safety, or malicious activity. Public sources can be incomplete, outdated, or wrong. Respect privacy and obtain permission before testing systems.</p>
-</div></section>
+      <h1>Good instincts.<br><span>Better intelligence.</span></h1>
 
-<section id="download"><div class="wrap download-layout">
-<div>
-<div class="kicker">Take the hound with you</div><h2>DEHOUND.<br>Ready when you are.</h2>
-<p class="copy">Download the Android testing build and explore the toolkit on your device. Only install files you trust.</p>
-<div class="steps">
-<div class="step"><span class="num">01</span><div><h3>Follow the creator</h3><p>Visit the creator’s GitHub profile first. The download button unlocks after you confirm you have followed the profile.</p></div></div>
-<div class="step"><span class="num">02</span><div><h3>Download the APK</h3><p>Once unlocked, download the APK hosted on this website.</p></div></div>
-<div class="step"><span class="num">03</span><div><h3>Install carefully</h3><p>Android may ask permission to install apps from your browser or file manager.</p></div></div>
-</div>
-</div>
+      <p>
+        DEHOUND is a dog-themed Android toolkit bringing public-source
+        research, quick checks, and security awareness into one focused
+        mobile workspace.
+      </p>
 
-<aside class="download-box">
-<div class="label">Android · Testing build</div><h3>Get DEHOUND APK</h3><p>Creator: Anonymous-beta (Chinedu)</p>
-<div class="download-actions">
-<a class="btn ghost" href="https://github.com/anonymous-beta" target="_blank" rel="noopener noreferrer">1. Open creator GitHub ↗</a>
-<button class="btn" id="unlock" type="button">I’ve followed — unlock download</button>
-<a class="btn" id="download" href="downloads/DEHOUND.apk" download hidden>2. Download DEHOUND.apk ↓</a>
-</div>
-<div class="notice" id="notice" role="status" aria-live="polite"></div>
-<p class="fine">Follow confirmation is an honour-system gate. A static website cannot verify GitHub follows. Upload your APK to <code>downloads/DEHOUND.apk</code> or change the download link in index.html.</p>
-</aside>
-</div></section>
+      <div class="actions">
+        <a class="button" href="#download">Get DEHOUND ↓</a>
+        <a class="button secondary" href="#about">Explore the toolkit</a>
+      </div>
 
-<section class="creator" id="creator"><div class="wrap">
-<div class="kicker">The person behind the project</div>
-<div class="creator-card"><div class="person"><div class="avatar">AB</div><div><h3>Anonymous-beta <span style="color:#ff4354">(Chinedu)</span></h3><p>Independent builder · DEHOUND creator</p></div></div>
-<a class="btn ghost" href="https://github.com/anonymous-beta" target="_blank" rel="noopener noreferrer">Visit GitHub profile ↗</a>
-</div></div></section>
+      <div class="small-note">
+        Built for responsible research. Use only information and systems
+        you are authorized to investigate.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-heading">
+      <div class="kicker">Built to track the signal</div>
+      <h2>Less noise.<br>More useful context.</h2>
+      <p class="intro">
+        DEHOUND brings common public-information checks together in one
+        interface, with an emphasis on responsible use and readable results.
+      </p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <h3>Focused research</h3>
+        <p>Keep common public-source checks organised without juggling
+        a pile of browser tabs.</p>
+      </article>
+
+      <article class="card">
+        <h3>Security awareness</h3>
+        <p>Review research leads and indicators without treating them
+        as automatic proof of malicious activity.</p>
+      </article>
+
+      <article class="card">
+        <h3>Mobile-first workflow</h3>
+        <p>A practical Android interface designed to keep inputs and
+        results straightforward.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="capabilities" id="tools">
+  <div class="wrap">
+    <div class="section-heading">
+      <div class="kicker">Inside the toolkit</div>
+      <h2>Tools with a clear purpose.</h2>
+      <p class="intro">
+        The exact capabilities depend on the installed app build and
+        availability of external information providers.
+      </p>
+    </div>
+
+    <div class="tools">
+      <div class="tool"><strong>Email checks</strong><span>Address research</span></div>
+      <div class="tool"><strong>Phone research</strong><span>Basic public context</span></div>
+      <div class="tool"><strong>IP intelligence</strong><span>Network information</span></div>
+      <div class="tool"><strong>Domain &amp; DNS</strong><span>Public domain records</span></div>
+      <div class="tool"><strong>Web page review</strong><span>Surface-level checks</span></div>
+      <div class="tool"><strong>Username search</strong><span>Public profile leads</span></div>
+      <div class="tool"><strong>Phishing awareness</strong><span>Indicators to review</span></div>
+      <div class="tool"><strong>Threat research</strong><span>Research support</span></div>
+    </div>
+
+    <p class="fine">
+      Public information may be incomplete or outdated. Verify important
+      findings independently and respect privacy and applicable laws.
+    </p>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap download-layout">
+
+    <div>
+      <div class="kicker">Take the hound with you</div>
+      <h2>DEHOUND.<br>Ready when you are.</h2>
+
+      <p class="intro">
+        Get the Android build and explore the toolkit on your device.
+        Follow the creator before proceeding to the download.
+      </p>
+
+      <p class="intro">
+        <strong>Step 1:</strong> Visit the creator's GitHub profile.<br>
+        <strong>Step 2:</strong> Follow the profile if you wish to support
+        the project.<br>
+        <strong>Step 3:</strong> Return here and confirm to unlock the APK.
+      </p>
+    </div>
+
+    <aside class="download-card">
+      <div class="kicker">Android · Testing build</div>
+      <h3>Get DEHOUND APK</h3>
+      <p>Created by Anonymous-beta (Chinedu).</p>
+
+      <div class="download-actions">
+
+        <button class="button" id="visitGithub" type="button">
+          1. Visit GitHub to follow ↗
+        </button>
+
+        <button class="button secondary" id="confirmFollow"
+          type="button" hidden>
+          2. I've followed — continue
+        </button>
+
+        <a class="button" id="apkDownload"
+          href="downloads/DEHOUND.apk" hidden>
+          3. Download DEHOUND.apk ↓
+        </a>
+
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite">
+        The download is locked. Visit the creator's GitHub profile first.
+      </div>
+
+      <p class="fine">
+        Please note: this confirmation flow cannot technically verify
+        GitHub follows. It asks visitors to visit the profile and confirm
+        manually.
+      </p>
+    </aside>
+
+  </div>
+</section>
+
+<section class="creator" id="creator">
+  <div class="wrap">
+    <div class="kicker">The person behind the project</div>
+
+    <div class="creator-card">
+      <div>
+        <h3>Anonymous-beta <span style="color:#ff4354">(Chinedu)</span></h3>
+        <p>Independent developer · DEHOUND creator</p>
+      </div>
+
+      <a class="button secondary"
+        href="https://github.com/anonymous-beta"
+        target="_blank" rel="noopener noreferrer">
+        Visit GitHub profile ↗
+      </a>
+    </div>
+  </div>
+</section>
+
 </main>
 
-<footer><div class="wrap foot"><div><strong>DEHOUND</strong> — Follow the signal.</div><div>Independent project by Anonymous-beta · Use responsibly.</div></div></footer>
+<footer>
+  <div class="wrap footer-inner">
+    <div><strong>DEHOUND</strong> — Follow the signal.</div>
+    <div>Independent project by Anonymous-beta · Use responsibly.</div>
+  </div>
+</footer>
 
 <script>
-const menuButton = document.getElementById('menu');
-const nav = document.getElementById('links');
+(() => {
+  "use strict";
 
-menuButton.addEventListener('click', () => {
-  const open = nav.classList.toggle('open');
-  menuButton.setAttribute('aria-expanded', String(open));
-  menuButton.textContent = open ? '×' : '☰';
-});
+  const GITHUB_URL = "https://github.com/anonymous-beta";
 
-nav.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    nav.classList.remove('open');
-    menuButton.setAttribute('aria-expanded', 'false');
-    menuButton.textContent = '☰';
+  const visitButton = document.getElementById("visitGithub");
+  const confirmButton = document.getElementById("confirmFollow");
+  const downloadButton = document.getElementById("apkDownload");
+  const status = document.getElementById("status");
+
+  const menuButton = document.getElementById("menu");
+  const navLinks = document.getElementById("navlinks");
+
+  let visitedGithub = false;
+
+  menuButton.addEventListener("click", () => {
+    const isOpen = navLinks.classList.toggle("open");
+    menuButton.setAttribute("aria-expanded", String(isOpen));
+    menuButton.textContent = isOpen ? "×" : "☰";
   });
-});
 
-const unlockButton = document.getElementById('unlock');
-const downloadButton = document.getElementById('download');
-const notice = document.getElementById('notice');
+  navLinks.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("open");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.textContent = "☰";
+    });
+  });
 
-unlockButton.addEventListener('click', () => {
-  downloadButton.hidden = false;
-  unlockButton.textContent = 'Download unlocked';
-  unlockButton.disabled = true;
-  unlockButton.style.opacity = '.65';
-  notice.textContent = 'Download unlocked. If the APK is not uploaded yet, add it to the downloads folder in your hosting File Manager.';
-  notice.classList.add('show');
-});
+  visitButton.addEventListener("click", () => {
+    // Open the profile from a direct user click to avoid popup blockers.
+    const profileWindow = window.open(
+      GITHUB_URL,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    visitedGithub = true;
+
+    confirmButton.hidden = false;
+
+    status.className = "status";
+    status.textContent =
+      "GitHub profile opened. Follow the creator there, then return to this page and confirm.";
+
+    visitButton.textContent = profileWindow
+      ? "GitHub opened — return here"
+      : "GitHub visit requested — continue";
+
+    visitButton.classList.add("secondary");
+  });
+
+  confirmButton.addEventListener("click", () => {
+    if (!visitedGithub) {
+      status.className = "status warning";
+      status.textContent =
+        "Please visit the creator's GitHub profile first.";
+      return;
+    }
+
+    downloadButton.hidden = false;
+    confirmButton.hidden = true;
+
+    status.className = "status success";
+    status.textContent =
+      "Download unlocked. Thank you for supporting DEHOUND!";
+
+    visitButton.textContent = "✓ GitHub visit completed";
+    visitButton.disabled = true;
+  });
+
+  downloadButton.addEventListener("click", event => {
+    if (!visitedGithub) {
+      event.preventDefault();
+      downloadButton.hidden = true;
+
+      status.className = "status warning";
+      status.textContent =
+        "Visit the creator's GitHub profile before downloading.";
+    }
+  });
+})();
 </script>
+
 </body>
 </html>
